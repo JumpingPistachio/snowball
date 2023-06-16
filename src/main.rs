@@ -1,11 +1,26 @@
 use std::process::{Command, ExitStatus};
 use std::io::Result;
 
-pub fn win_cmd(args: &[&str]) -> Result<ExitStatus> {
-    Command::new("cmd")
-        .args(args)
+struct SSH {
+    shell: String,
+    run: String,
+    hostname: String
+}
+
+pub fn cmd_win() -> Result<ExitStatus> {
+    let ssh_win = SSH {
+        shell: String::from("cmd"),
+        run: String::from("ping"),
+        hostname: String::from("google.com")
+    };
+    
+    Command::new(ssh_win.shell)
+        .arg("/k")
+        .arg(ssh_win.run)
+        .arg(ssh_win.hostname)
         .spawn()?.wait()
 }
 fn main() {
-    let _output = win_cmd(&["/k", "ping google.com"]);
+    let _output = cmd_win();
+
 }
